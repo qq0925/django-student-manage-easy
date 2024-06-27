@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>学生列表</title>
+</head>
+<body>
+    <h1>学生列表</h1>
+    {% if user.is_authenticated %}
+        <p>欢迎, {{ user.username }}! <a href="{% url 'logout' %}">注销</a></p>
+    {% else %}
+        <p>您未登录。<a href="{% url 'login' %}">登录</a></p>
+    {% endif %}
+    <form method="get" action="{% url 'student_list' %}">
+        <input type="text" name="q" placeholder="搜索学生姓名或ID" value="{{ request.GET.q }}">
+        <button type="submit">搜索</button>
+    </form>
+    <a href="{% url 'student_create' %}">添加学生</a>
+    <ul>
+        {% for student in students %}
+        <li>
+            {{ student.student_id }} - {{ student.name }} - {{ student.major }}
+            <a href="{% url 'student_update' student.pk %}">编辑</a>
+            <a href="{% url 'student_delete' student.pk %}">删除</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
